@@ -12,19 +12,34 @@
     <nav class="navbar navbar-dark bg-primary navbar-expand-md mb-4">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ route('root') }}">{{ config.app_name }}</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="ml-auto">
-                    <a href="javascript:void(0)" class="btn btn-success my-2 my-sm-0 btn-clipboard" data-toggle="tooltip" title="{{ lang('copy_link') }}" data-clipboard-text="{{ url }}{{ copy_url_behavior == 'raw' ? '/raw' }}"><i class="fas fa-link fa-lg fa-fw"></i></a>
-                    <a href="javascript:void(0)" class="btn btn-info my-2 my-sm-0" data-toggle="tooltip" title="{{ lang('public.telegram') }}" onclick="$('#modalTelegramShare').modal('toggle')"><i class="fab fa-telegram-plane fa-lg fa-fw"></i></a>
-                    <a href="{{ url }}/raw" class="btn btn-secondary my-2 my-sm-0" data-toggle="tooltip" title="{{ lang('raw') }}"><i class="fas fa-file-alt fa-lg fa-fw"></i></a>
-                    <a href="{{ url }}/download" class="btn btn-warning my-2 my-sm-0" data-toggle="tooltip" title="{{ lang('download') }}"><i class="fas fa-cloud-download-alt fa-lg fa-fw"></i></a>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a href="javascript:void(0)" class="nav-link btn-clipboard" data-toggle="tooltip"
+                           title="{{ lang('copy_link') }}"
+                           data-clipboard-text="{{ url }}{{ copy_url_behavior == 'raw' ? '/raw' }}"><i
+                                    class="fas fa-fw fa-link"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url }}/raw" class="nav-link" data-toggle="tooltip" title="{{ lang('raw') }}"><i
+                                    class="fas fa-fw fa-file-alt"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url }}/download" class="nav-link" data-toggle="tooltip"
+                           title="{{ lang('download') }}"><i class="fas fa-fw fa-download"></i></a>
+                    </li>
                     {% if session.get('logged') %}
-                        <a href="javascript:void(0)" class="btn btn-danger my-2 my-sm-0 public-delete" data-link="{{ route('upload.delete', {'id': media.mediaId}) }}" data-toggle="tooltip" title="{{ lang('delete') }}"><i class="fas fa-trash fa-lg fa-fw"></i></a>
+                        <li class="nav-item">
+                            <a href="javascript:void(0)" class="nav-link public-delete"
+                               data-link="{{ route('upload.delete', {'id': media.mediaId}) }}" data-toggle="tooltip"
+                               title="{{ lang('delete') }}"><i class="fas fa-fw fa-trash"></i></a>
+                        </li>
                     {% endif %}
-                </div>
+                </ul>
             </div>
         </div>
     </nav>
@@ -37,7 +52,8 @@
                         <div class="text-center mb-4">
                             <p>{{ lang('public.delete_text') }}</p>
                             <div class="btn-group">
-                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> {{ lang('yes') }}</button>
+                                <button type="submit" class="btn btn-danger"><i
+                                            class="fas fa-trash"></i> {{ lang('yes') }}</button>
                                 <a href="{{ url }}" class="btn btn-secondary">{{ lang('no') }}</a>
                             </div>
                         </div>
@@ -48,14 +64,15 @@
                     {% set typeMatched = true %}
                     <div class="row mb-2">
                         <div class="col-md-12">
-                            <img src="{{ url }}/raw" class="img-thumbnail rounded mx-auto d-block" alt="{{ media.filename }}">
+                            <img src="{{ url }}/raw" class="img-thumbnail rounded mx-auto d-block"
+                                 alt="{{ media.filename }}">
                         </div>
                     </div>
                 {% elseif type is same as ('text') %}
                     {% set typeMatched = true %}
                     <div class="row mb-2">
                         <div class="col-md-12">
-                            <pre><code>{{ media.text }}</code></pre>
+                            <pre class="{{ media.extension }}"><code>{{ media.text }}</code></pre>
                         </div>
                     </div>
                 {% elseif type is same as ('audio') %}
@@ -64,7 +81,8 @@
                         <audio id="player" autoplay controls loop preload="auto">
                             <source src="{{ url }}/raw" type="{{ media.mimetype }}">
                             Your browser does not support HTML5 audio.
-                            <a href="{{ url }}/download" class="btn btn-dark btn-lg"><i class="fas fa-cloud-download-alt fa-fw"></i> Download</a>
+                            <a href="{{ url }}/download" class="btn btn-dark btn-lg"><i
+                                        class="fas fa-cloud-download-alt fa-fw"></i> Download</a>
                         </audio>
                     </div>
                 {% elseif type is same as ('video') %}
@@ -73,14 +91,16 @@
                         <video id="player" autoplay controls loop preload="auto">
                             <source src="{{ url }}/raw" type="{{ media.mimetype }}">
                             Your browser does not support HTML5 video.
-                            <a href="{{ url }}/download" class="btn btn-dark btn-lg"><i class="fas fa-cloud-download-alt fa-fw"></i> Download</a>
+                            <a href="{{ url }}/download" class="btn btn-dark btn-lg"><i
+                                        class="fas fa-cloud-download-alt fa-fw"></i> Download</a>
                         </video>
                     </div>
                 {% elseif media.mimetype is same as ('application/pdf') %}
                     {% set typeMatched = true %}
                     <object type="{{ media.mimetype }}" data="{{ url }}/raw" class="pdf-viewer">
                         Your browser does not support PDF previews.
-                        <a href="{{ url }}/download" class="btn btn-dark btn-lg"><i class="fas fa-cloud-download-alt fa-fw"></i> Download</a>
+                        <a href="{{ url }}/download" class="btn btn-dark btn-lg"><i
+                                    class="fas fa-cloud-download-alt fa-fw"></i> Download</a>
                     </object>
                 {% endif %}
                 {% if not typeMatched %}
@@ -104,14 +124,16 @@
                             <div class="row mt-1 mb-2">
                                 <div class="col-md-12 text-center">
                                     {% for tag_id, tag_name in media.tags %}
-                                        <span class="badge badge-pill badge-primary shadow-sm mr-1" title="{{ tag_name }}">{{ tag_name }}</span>
+                                        <span class="badge badge-pill badge-primary shadow-sm mr-1"
+                                              title="{{ tag_name }}">{{ tag_name }}</span>
                                     {% endfor %}
                                 </div>
                             </div>
                         {% endif %}
                         <div class="row mt-3">
                             <div class="col-md-12">
-                                <a href="{{ url }}/download" class="btn btn-dark btn-lg"><i class="fas fa-cloud-download-alt fa-fw"></i> Download</a>
+                                <a href="{{ url }}/download" class="btn btn-dark btn-lg"><i
+                                            class="fas fa-cloud-download-alt fa-fw"></i> Download</a>
                             </div>
                         </div>
                     </div>
@@ -125,7 +147,8 @@
                         <div class="row mt-2">
                             <div class="col-md-12 text-center">
                                 {% for tag_id, tag_name in media.tags %}
-                                    <span class="badge badge-pill badge-primary shadow-sm mr-1" title="{{ tag_name }}">{{ tag_name }}</span>
+                                    <span class="badge badge-pill badge-primary shadow-sm mr-1"
+                                          title="{{ tag_name }}">{{ tag_name }}</span>
                                 {% endfor %}
                             </div>
                         </div>
@@ -144,10 +167,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <textarea type="text" class="form-control mb-2" id="telegram-share-text" onclick="this.select()">{{ media.filename }}</textarea>
+                    <textarea type="text" class="form-control mb-2" id="telegram-share-text"
+                              onclick="this.select()">{{ media.filename }}</textarea>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-info" id="telegram-share-button" onclick="app.telegramShare()" data-url="https://telegram.me/share/url?url={{ url }}&text=">
+                    <button type="button" class="btn btn-info" id="telegram-share-button" onclick="app.telegramShare()"
+                            data-url="https://telegram.me/share/url?url={{ url }}&text=">
                         <i class="fab fa-telegram-plane fa-lg fa-fw"></i> {{ lang("send") }}
                     </button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ lang('cancel') }}</button>
