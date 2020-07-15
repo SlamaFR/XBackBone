@@ -50,9 +50,14 @@ class MediaController extends Controller
             $size = $filesystem->getSize($media->storage_path);
 
             $type = explode('/', $media->mimetype)[0];
-            if ($type === 'image' && !isDisplayableImage($media->mimetype)) {
-                $type = 'application';
-                $media->mimetype = 'application/octet-stream';
+            $media->extension = explode('.', $mediaCode)[1];
+            if ($type === 'image') {
+                if (!isDisplayableImage($media->mimetype)) {
+                    $type = 'application';
+                    $media->mimetype = 'application/octet-stream';
+                } else {
+                    return $this->streamMedia($request, $response, $this->storage, $media);
+                }
             }
             if ($type === 'text') {
                 if ($size <= (200 * 1024)) { // less than 200 KB
