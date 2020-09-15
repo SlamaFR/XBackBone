@@ -1,7 +1,7 @@
 <?php
 
-use App\Exception\Handlers\AppErrorHandler;
-use App\Exception\Handlers\Renderers\HtmlErrorRenderer;
+use App\Exceptions\Handlers\AppErrorHandler;
+use App\Exceptions\Handlers\Renderers\HtmlErrorRenderer;
 use App\Factories\ViewFactory;
 use App\Middleware\InjectMiddleware;
 use App\Middleware\LangMiddleware;
@@ -12,7 +12,6 @@ use DI\Bridge\Slim\Bridge;
 use DI\ContainerBuilder;
 use function DI\factory;
 use function DI\get;
-use function DI\value;
 use Psr\Container\ContainerInterface as Container;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
